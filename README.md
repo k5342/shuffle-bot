@@ -1,20 +1,35 @@
 # shuffle-bot
 An awesome shuffling team bot for discord.
 
-## Installation
+## Usage
+After connecting to any voice channel on your server, simply type following command on your text channels to make teams.
+```
+!!teams <N> [exclude_users ...]
+```
 
-### Dedicated Host
-To run customly, clone this repositoy and install dependency:
+- `N` -- the number of teams to you are going to make.
+- `exclude_users` -- the exclude screen_name of users on team making.
+
+## Installation and Setup
+
+### On Dedicated Host
+
+#### Clone & Install
+To run manually, clone this repositoy and install dependency:
 ```
 go get github.com/bwmarrin/discordgo
 go build main.go
 ```
 
+#### Register an Application on Discord Developer Portal
 And create an *Application* (bot feature and some permissions enabled) and issue *Token* from [Discord Developer Portal](https://discordapp.com/developers/applications/)
 
 This bot requires following *Bot Permissions*:
+```
 - Send Messages
+```
 
+#### Run
 Set *Token* as `SHUFFLEBOT_TOKEN` environment variable.
 ```
 export SHUFFLEBOT_TOKEN=`XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX`
@@ -31,22 +46,19 @@ Finally run the bot.
 .\main.exe
 ```
 
+#### Invite to your server
 And to invite your server, generate invitation URL manually using *Client ID* on *Discord Developer Portal*.
 You can create Invitation URL manually following this template. More details are available at [discord documentation](https://discordapp.com/developers/docs/topics/oauth2#bots).
 ```
 https://discordapp.com/oauth2/authorize?client_id=<client_id>&scope=bot&permissions=2048
 ```
 
-### From invitation
+### From This Invitation Link (Beta)
+**Disclaimer:** We may stop this service at any time on no notice and no warranty. And since this bot can view some messages on your server, please set appropriate permissions to protect from your sensitive messages and unexpected malfunction!!
 
-## Command
-After connecting to any voice channel on your server, simply type following command on your text channels to make teams.
 ```
-!! teams <N> [exclude_users ...]
+https://discordapp.com/oauth2/authorize?client_id=506729503754682369&scope=bot&permissions=2048
 ```
-
-- `N` -- the number of teams to you are going to make.
-- `exclude_users` -- the exclude screen_name of users on team making.
 
 ## LICENSE
 Copyright 2018 k5342
