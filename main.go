@@ -64,7 +64,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	gid := sourceTextChannel.GuildID
 	if gid == "" {
 		// Invoked from user chat directly
-		sendReply(s, m, "Please send after connecting and joining some voice channel!")
+		s.ChannelMessageSend(m.ChannelID, "Please send after connecting and joining some voice channel!")
 		return
 	}
 	// Invoked from Server (Guild)
