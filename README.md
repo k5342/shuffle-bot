@@ -1,5 +1,5 @@
 # shuffle-bot
-An awesome shuffling team bot for discord.
+An awesome discord bot to make shuffled teams.
 
 ## Usage
 After connecting to any voice channel on your server, simply type following command on your text channels to make teams.
@@ -9,7 +9,7 @@ After connecting to any voice channel on your server, simply type following comm
 
 Parameters:
 - `N` -- the number of teams to you are going to make.
-- `exclude_users` -- the exclude screen_name of users on team making.
+- `exclude_users` -- an screen_name of users excluded on team making.
 
 Examples:
 - `!!teams` -- shows usage
@@ -69,6 +69,7 @@ https://discordapp.com/oauth2/authorize?client_id=506729503754682369&scope=bot&p
 
 ## LICENSE
 The MIT License
+
 Copyright 2018 k5342
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
