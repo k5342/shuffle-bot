@@ -4,11 +4,18 @@ An awesome shuffling team bot for discord.
 ## Usage
 After connecting to any voice channel on your server, simply type following command on your text channels to make teams.
 ```
-!!teams <N> [exclude_users ...]
+!!teams <N> [exclude_users]...
 ```
 
+Parameters:
 - `N` -- the number of teams to you are going to make.
 - `exclude_users` -- the exclude screen_name of users on team making.
+
+Examples:
+- `!!teams` -- shows usage
+- `!!teams 2` -- creates `2` teams by voice channel users where you are in
+- `!!teams 2 userA` -- creates `2` teams without `userA`
+- `!!teams 5 userX userZ` -- creates `5` teams without `userX` and `userZ`
 
 ## Installation and Setup
 
@@ -61,6 +68,7 @@ https://discordapp.com/oauth2/authorize?client_id=506729503754682369&scope=bot&p
 ```
 
 ## LICENSE
+The MIT License
 Copyright 2018 k5342
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
