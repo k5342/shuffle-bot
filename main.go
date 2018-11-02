@@ -58,9 +58,11 @@ func isContain(needle string, haystack []string) bool {
 }
 
 func userPresenceUpdateHandler(s *discordgo.Session, p *discordgo.PresenceUpdate) {
-	// update cache
-	fmt.Println("Username changed: " + p.User.Username)
-	usernames[p.User.ID] = *p.User
+	if p.User.Username != "" {
+		// update cache
+		fmt.Println("Username changed: " + p.User.Username)
+		usernames[p.User.ID] = *p.User
+	}
 }
 
 func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
