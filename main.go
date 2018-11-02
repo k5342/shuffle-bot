@@ -15,6 +15,7 @@ import (
 
 // cache tables
 var guildIDs map[string]string
+var usernames map[string]discordgo.User
 
 func main() {
 	dg, err := discordgo.New("Bot " + os.Getenv("SHUFFLEBOT_TOKEN"))
@@ -24,7 +25,9 @@ func main() {
 	}
 
 	guildIDs = make(map[string]string)
+	usernames = make(map[string]discordgo.User)
 	dg.AddHandler(messageHandler)
+	dg.AddHandler(userPresenceUpdateHandler)
 
 	dg.Open()
 	if err != nil {
@@ -54,6 +57,12 @@ func isContain(needle string, haystack []string) bool {
 	return false
 }
 
+func userPresenceUpdateHandler(s *discordgo.Session, p *discordgo.PresenceUpdate) {
+	// update cache
+	fmt.Println("Username changed: " + p.User.Username)
+	usernames[p.User.ID] = *p.User
+}
+
 func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == s.State.User.ID {
 		return
@@ -61,7 +70,6 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	// translate channelID -> guildID to reduce latency
 	// This does not need use in case of building with latest discordgo's develop branch
-
 	gid, ok := guildIDs[m.ChannelID]
 	if !ok {
 		fmt.Println("Cache MISS")
@@ -131,12 +139,20 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			sourceVoiceChannel = vs.ChannelID
 		}
 
-		user, err := s.User(vs.UserID)
-		if err != nil {
-			fmt.Println("Error while fetching username")
-			sendReply(s, m, "Error: unknown error.")
-			return
+		// check cache
+		user, ok := usernames[vs.UserID]
+		if !ok {
+			// cache MISS
+			u, err := s.User(vs.UserID)
+			if err != nil {
+				fmt.Println("Error while fetching username")
+				sendReply(s, m, "Error: unknown error.")
+				return
+			}
+			user = *u
+			usernames[vs.UserID] = user
 		}
+
 		if !isContain(user.Username, skipUsernames) {
 			voiceChannelUsers[vs.ChannelID] =
 				append(voiceChannelUsers[vs.ChannelID], user.Username)
