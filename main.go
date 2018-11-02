@@ -13,6 +13,9 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+// cache tables
+var guildIDs map[string]string
+
 func main() {
 	dg, err := discordgo.New("Bot " + os.Getenv("SHUFFLEBOT_TOKEN"))
 	if err != nil {
@@ -20,6 +23,7 @@ func main() {
 		return
 	}
 
+	guildIDs = make(map[string]string)
 	dg.AddHandler(messageHandler)
 
 	dg.Open()
@@ -55,18 +59,28 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	sourceTextChannel, err := s.Channel(m.ChannelID)
-	if err != nil {
-		fmt.Println("Error while fetching source channel: ", err)
-		return
+	// translate channelID -> guildID to reduce latency
+	// This does not need use in case of building with latest discordgo's develop branch
+
+	gid, ok := guildIDs[m.ChannelID]
+	if !ok {
+		fmt.Println("Cache MISS")
+		// cache miss
+		sourceTextChannel, err := s.Channel(m.ChannelID)
+		if err != nil {
+			fmt.Println("Error while fetching source channel: ", err)
+			return
+		}
+		gid = sourceTextChannel.GuildID
+		guildIDs[m.ChannelID] = gid
 	}
 
-	gid := sourceTextChannel.GuildID
 	if gid == "" {
 		// Invoked from user chat directly
 		s.ChannelMessageSend(m.ChannelID, "Please send after connecting and joining some voice channel!")
 		return
 	}
+
 	// Invoked from Server (Guild)
 
 	if !strings.HasPrefix(m.Content, "!!teams") {
