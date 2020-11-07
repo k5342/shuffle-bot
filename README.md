@@ -22,9 +22,8 @@ Examples:
 ### On Dedicated Host
 
 #### Clone & Install
-To run manually, clone this repositoy and install dependency:
+To run manually, clone this repository and build:
 ```
-go get github.com/bwmarrin/discordgo
 go build main.go
 ```
 
