@@ -112,13 +112,24 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			sourceVoiceChannel = vs.ChannelID
 		}
 
+		var user *discordgo.User
 		member, err := s.State.Member(gid, vs.UserID)
-		if err != nil {
-			fmt.Println("Error while fetching username")
-			sendReply(s, m, "Error: unknown error.")
-			return
+		if err == nil {
+			user = member.User
+		} else {
+			if err == discordgo.ErrNilState || err == discordgo.ErrStateNotFound {
+				user, err = s.User(vs.UserID)
+				if err != nil {
+					fmt.Printf("Error while fetching username from API: %+v", err)
+					sendReply(s, m, "Error: temporary error.")
+					return
+				}
+			} else {
+				fmt.Printf("Error while fetching username from State: %+v", err)
+				sendReply(s, m, "Error: unknown error.")
+				return
+			}
 		}
-		user := member.User
 
 		if !isContain(user.Username, skipUsernames) {
 			voiceChannelUsers[vs.ChannelID] =
